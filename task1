@@ -1,1 +1,70 @@
+import java.util.Scanner;
+import java.util.Random;
 
+public class GuessingGame {
+    
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        Random rand = new Random();
+        boolean keepPlaying = true;
+        int totalRounds = 0;
+        int totalWins = 0;
+
+        System.out.println("### Number Guessing Game ###");
+
+        while (keepPlaying) {
+            int secretNumber = rand.nextInt(100) + 1;
+            int guessLimit = 5;
+            int tries = 0;
+            boolean guessedCorrectly = false;
+
+            System.out.println("\nA new number has been chosen between 1 and 100.");
+            System.out.println("You have " + guessLimit + " chances to guess it.");
+
+            while (tries < guessLimit) {
+                System.out.print("Guess #" + (tries + 1) + ": ");
+
+                if (!input.hasNextInt()) {
+                    System.out.println("That's not a valid number. Try again.");
+                    input.next(); // skip invalid input
+                    continue;
+                }
+
+                int guess = input.nextInt();
+                tries++;
+
+                if (guess == secretNumber) {
+                    System.out.println("🎉 You got it! The number was " + secretNumber + ".");
+                    guessedCorrectly = true;
+                    totalWins++;
+                    break;
+                } else if (guess < secretNumber) {
+                    System.out.println("Too low.");
+                } else {
+                    System.out.println("Too high.");
+                }
+            }
+
+            if (!guessedCorrectly) {
+                System.out.println("❌ You're out of attempts. The number was " + secretNumber + ".");
+            }
+
+            totalRounds++;
+            System.out.print("Do you want to play again? (y/n): ");
+            input.nextLine(); // clear input buffer
+            String playAgain = input.nextLine().trim().toLowerCase();
+
+            if (!playAgain.equals("y")) {
+                keepPlaying = false;
+            }
+        }
+
+        // Final Score Summary
+        System.out.println("\n--- Game Summary ---");
+        System.out.println("Rounds played: " + totalRounds);
+        System.out.println("Rounds won: " + totalWins);
+        System.out.println("Thanks for playing!");
+
+        input.close();
+    }
+}
