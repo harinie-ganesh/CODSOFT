@@ -1,0 +1,59 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class GradeCalculator {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        ArrayList<Integer> subjectMarks = new ArrayList<>();
+
+        System.out.print("How many subjects do you have? ");
+        int subjectCount = input.nextInt();
+
+        // Collect marks
+        for (int i = 1; i <= subjectCount; i++) {
+            System.out.print("Enter marks for subject " + i + ": ");
+            int mark = input.nextInt();
+
+            // Check mark is valid
+            while (mark < 0 || mark > 100) {
+                System.out.print("Invalid. Please enter between 0 and 100: ");
+                mark = input.nextInt();
+            }
+
+            subjectMarks.add(mark);
+        }
+
+        int total = calculateTotal(subjectMarks);
+        double average = calculateAverage(total, subjectCount);
+        String grade = assignGrade(average);
+
+        // Final Output
+        System.out.println("\n--- Grade Report ---");
+        System.out.println("Total Marks: " + total);
+        System.out.printf("Average: %.2f%%\n", average);
+        System.out.println("Grade: " + grade);
+
+        input.close();
+    }
+
+    static int calculateTotal(ArrayList<Integer> marksList) {
+        int sum = 0;
+        for (int mark : marksList) {
+            sum += mark;
+        }
+        return sum;
+    }
+
+    static double calculateAverage(int total, int count) {
+        return (double) total / count;
+    }
+
+    static String assignGrade(double avg) {
+        if (avg >= 85) return "A+";
+        else if (avg >= 75) return "A";
+        else if (avg >= 65) return "B";
+        else if (avg >= 50) return "C";
+        else return "F";
+    }
+}
